@@ -31,6 +31,13 @@
         color: #333;
     }
 
+    .alert {
+        margin-top: 30px;
+    }
+
+    .import {
+        text-align:center;
+    }
     .btn {
         padding: 10px 20px;
         border-radius: 30px;
@@ -155,15 +162,27 @@
     <div class="text-center mb-5">
         <h1>Biblioteca Virtual</h1>
         @if (ViewBag.UsuarioLogado)
-        {
-            <a class="btn btn-success" asp-controller="Livros" asp-action="Exportar">Exportar Modelo</a>
+        {          
             <a class="btn btn-primary" asp-controller="Livros" asp-action="Cadastrar">Cadastrar Novo Livro</a>
+            <button type="submit" class="btn btn-primary">Importar</button>
         }
         else
         {
             <p class="text-center text-danger">Por favor, faça login para cadastrar livros.</p>
         }
     </div>
+    <!-- Formulário para importação -->
+    <form asp-action="ImportExcel" asp-controller="Livros" method="post" enctype="multipart/form-data" class="import">
+        <label for="fileInput">Importar Planilha Excel</label>
+        <input type="file" name="form" class="form-control-file mb-2" id="fileInput">
+        <button type="submit" class="btn btn-primary">Importar</button>
+        
+    </form>
+    <div class="text-center mb-5">
+       
+        <a class="btn btn-success" asp-controller="Livros" asp-action="Exportar">Exportar Modelo</a>
+        <a class="btn btn-success" asp-controller="Livros" asp-action="ExportLivros">Exportar Livros</a>
+        </div>
 
     <!-- Cards de Livros -->
     <div class="row">

@@ -10,7 +10,6 @@ namespace NewRepository.Models
 
         public string Capa { get; set; } = string.Empty;
 
-        [Required]
         public string Isbn { get; set; } = string.Empty; // Código ISBN do livro, será único via DbContext
 
         public string Titulo { get; set; } = string.Empty;

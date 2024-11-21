@@ -176,6 +176,60 @@ namespace NewRepository.Controllers
             return dataTable;
         }
 
+        public IActionResult ExportLivros()
+        {
+            // Criação de um novo DataTable apenas com a estrutura (sem dados)
+            DataTable dataTable = GetExportLivros();
+
+            using (XLWorkbook workBook = new XLWorkbook())
+            {
+                workBook.AddWorksheet(dataTable, "Exportar Livros");
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    workBook.SaveAs(ms);
+                    return File(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Exportar Livros.xlsx");
+                }
+            }
+        }
+
+        private DataTable GetExportLivros()
+        {
+            // Recupera o usuário logado
+            var usuarioLogado = _sessaoService.BuscarSessao();
+            if (usuarioLogado == null)
+            {
+                throw new UnauthorizedAccessException("Usuário não autorizado ou sessão expirada.");
+            }
+
+            DataTable dataTable = new DataTable();
+            dataTable.TableName = "ExportLivros";
+
+            // Adiciona as colunas sem dados
+            dataTable.Columns.Add("Isbn", typeof(string));
+            dataTable.Columns.Add("Titulo", typeof(string));
+            dataTable.Columns.Add("Genero", typeof(string));
+            dataTable.Columns.Add("Ano Publicacao", typeof(string));
+            dataTable.Columns.Add("Autor", typeof(string));
+            dataTable.Columns.Add("Nome Editora", typeof(string));
+            dataTable.Columns.Add("Quantidade", typeof(int));
+
+            // Filtra os livros cadastrados pelo usuário logado
+            var dados = _context.Livros
+                .Where(livro => livro.UsuarioId == usuarioLogado.Id) // Filtra pelo ID do usuário logado
+                .ToList();
+
+            // Preenche o DataTable apenas se houver livros
+            if (dados.Count > 0)
+            {
+                dados.ForEach(livros =>
+                {
+                    dataTable.Rows.Add(livros.Isbn, livros.Titulo, livros.Genero, livros.AnoPublicacao, livros.Autor, livros.NomeEditatora);
+                });
+            }
+
+            return dataTable;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Cadastrar(LivroCriacaoDto livroCriacaoDto, IFormFile foto)
         {

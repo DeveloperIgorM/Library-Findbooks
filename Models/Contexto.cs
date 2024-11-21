@@ -17,7 +17,7 @@ namespace NewRepository.Models
         {
             // Configurar ISBN como índice único em LivroModel
             modelBuilder.Entity<LivroModel>()
-                .HasIndex(l => l.Isbn)
+                .HasIndex(l => l.Id)
                 .IsUnique();
 
             // Configuração do relacionamento entre LivroModel e UsuarioModel
