@@ -59,6 +59,7 @@ namespace NewRepository.Services.Livro
                     Capa = nomeCaminhoImagem,
                     Isbn = livroCriacaoDto.Isbn,
                     Titulo = livroCriacaoDto.Titulo,
+                    Sinopse = livroCriacaoDto.Sinopse,
                     Autor = livroCriacaoDto.Autor,
                     AnoPublicacao = livroCriacaoDto.AnoPublicacao,
                     NomeEditatora = livroCriacaoDto.NomeEditatora,
@@ -152,6 +153,7 @@ namespace NewRepository.Services.Livro
                 // Atualiza as propriedades do livro com os dados recebidos
                 livroBanco.Isbn = livro.Isbn;
                 livroBanco.Titulo = livro.Titulo;
+                livroBanco.Sinopse = livro.Sinopse;
                 livroBanco.Autor = livro.Autor;
                 livroBanco.AnoPublicacao = livro.AnoPublicacao;
                 livroBanco.NomeEditatora = livro.NomeEditatora;

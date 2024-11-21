@@ -193,7 +193,8 @@
                             <a class="btn btn-danger"
                                asp-controller="Livros"
                                asp-action="Remover"
-                               asp-route-id="@livro.Id">Remover</a>
+                               asp-route-id="@livro.Id"
+                               onclick="return confirm('Este livro será excluído permanentemente. Você realmente deseja continuar?');">Remover</a>
                         </div>
                     }
                 </div>

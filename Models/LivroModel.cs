@@ -14,6 +14,8 @@ namespace NewRepository.Models
         public string Isbn { get; set; } = string.Empty; // Código ISBN do livro, será único via DbContext
 
         public string Titulo { get; set; } = string.Empty;
+
+        public string Sinopse { get; set; } = string.Empty;
         public string Autor { get; set; } = string.Empty;
         public string AnoPublicacao { get; set; } = string.Empty;
         public string NomeEditatora { get; set; } = string.Empty;
