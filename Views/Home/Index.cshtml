@@ -160,6 +160,27 @@
         #backToTop:hover {
             background-color: #0056b3;
         }
+
+    /* Card sem capa */
+    .book-card-front.no-cover {
+        background-color: #007bff; /* Cor de destaque */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+        .book-card-front.no-cover .no-cover-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+    .book-card-front .card-image img {
+        border-radius: 15px;
+    }
 </style>
 
 @model IEnumerable<LivroModel>
@@ -181,11 +202,22 @@
             {
                 <div class="book-card">
                     <div class="book-card-inner">
-                        <div class="book-card-front">
-                            <div class="card-image">
-                                <img src="~/imagem/@livro.Capa" alt="@livro.Titulo">
+                        @if (!string.IsNullOrEmpty(livro.Capa))
+                        {
+                            <!-- Livro com capa -->
+                            <div class="book-card-front">
+                                <div class="card-image">
+                                    <img src="~/imagem/@livro.Capa" alt="@livro.Titulo">
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <!-- Livro sem capa -->
+                            <div class="book-card-front no-cover">
+                                <h3 class="no-cover-title">@livro.Titulo</h3>
+                            </div>
+                        }
 
                         <div class="book-card-back">
                             <h5 class="card-title">@livro.Titulo</h5>
@@ -205,6 +237,7 @@
             }
         }
     </div>
+
 </div>
 
 <button id="backToTop" title="Voltar ao topo">↑</button>

@@ -29,8 +29,10 @@
         /* Estilização da imagem da capa do livro */
         .detalhes-container img {
             max-width: 250px;
+            max-height: 400px; /* Limita a altura máxima da imagem */
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            object-fit: cover; /* Garante o ajuste da imagem ao contêiner */
         }
 
     /* Estilização da área de descrição ao lado da imagem */
@@ -38,7 +40,9 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
+        max-height: 500px; /* Limita a altura máxima do conteúdo */
+        overflow-y: auto; /* Adiciona barra de rolagem para textos longos */
     }
 
         /* Título e detalhes do livro */
@@ -90,49 +94,77 @@
     }
 
         .btn-voltar:hover {
-            background-color: #FFD700; /* Cor dourada/bege */
-            color: black; /* Texto preto */
+            background-color: #FFD700;
+            color: black;
         }
-</style>
-   @if (ViewBag.UsuarioLogado ?? false)                      
-    {
-<div class="container mt-5">
-    <!-- Descrição do livro -->
-    <div class="detalhes-container">
-    <!-- Imagem da capa do livro -->
-    <img src="~/imagem/@Model.Capa" alt="Capa do Livro" />
 
-    <!-- Descrição do livro -->
-    <div class="detalhes-descricao">
-        <h2>@Model.Titulo</h2>
-        <p><strong>Autor:</strong> @Model.Autor</p>
-        <p><strong>ISBN:</strong> @Model.Isbn</p>
-        <p><strong>Ano de Publicação:</strong> @Model.AnoPublicacao</p>
-        <p><strong>Sinopse:</strong> @Model.Sinopse</p>
+    /* Disponibilidade */
+    .detalhes-disponibilidade {
+        margin: 20px auto;
+        max-width: 900px;
+        padding: 15px;
+        background: #EEE8AA;
+        border-radius: 15px;
+        border: 2px solid black;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
+        .detalhes-disponibilidade h4 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
 
-        <h4>Disponível nas seguintes instituições:</h4>
-        <ul>
-            @foreach (var instLivro in Model.InstituicaoLivros)
-            {
-                <li>@instLivro.Usuario.NomeFantasia - Quantidade: @instLivro.Quantidade</li>
+        .detalhes-disponibilidade ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .detalhes-disponibilidade ul li {
+                font-size: 1.1rem;
+                color: #555;
+                margin-bottom: 5px;
             }
-        </ul>
 
-        <a class="btn-voltar" asp-controller="Home" asp-action="Index">
-            <i class="bi bi-arrow-left-circle"></i> Voltar
-        </a>
-         </div>
-    </div>
-    </div>
-}
-else
+    .detalhes-sem-capa {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 300px;
+        background-color: #d3d3d3; /* Cor de fundo para destaque */
+        border: 1px dashed #999;
+        border-radius: 10px;
+        text-align: center;
+        color: #555;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+        .detalhes-sem-capa span {
+            display: block;
+            padding: 10px;
+        }
+
+</style>
+
+@if (ViewBag.UsuarioLogado ?? false)                      
 {
     <div class="container mt-5">
         <!-- Descrição do livro -->
         <div class="detalhes-container">
-            <!-- Imagem da capa do livro -->
-            <img src="~/imagem/@Model.Capa" alt="Capa do Livro" />
+            <!-- Imagem da capa do livro ou mensagem alternativa -->
+            @if (!string.IsNullOrEmpty(Model.Capa))
+            {
+                <img src="~/imagem/@Model.Capa" alt="Capa do Livro" />
+            }
+            else
+            {
+                <div class="detalhes-sem-capa">
+                    <span>Capa do livro sendo adicionada</span>
+                </div>
+            }
 
             <!-- Descrição do livro -->
             <div class="detalhes-descricao">
@@ -141,7 +173,6 @@ else
                 <p><strong>ISBN:</strong> @Model.Isbn</p>
                 <p><strong>Ano de Publicação:</strong> @Model.AnoPublicacao</p>
                 <p><strong>Sinopse:</strong> @Model.Sinopse</p>
-
 
                 <h4>Disponível nas seguintes instituições:</h4>
                 <ul>
@@ -158,4 +189,45 @@ else
         </div>
     </div>
 }
+else
+{
+    <div class="detalhes-container">
+        <!-- Imagem da capa do livro ou mensagem alternativa -->
+        @if (!string.IsNullOrEmpty(Model.Capa))
+        {
+            <img src="~/imagem/@Model.Capa" alt="Capa do Livro" />
+        }
+        else
+        {
+            <div class="detalhes-sem-capa">
+                <span>Capa do livro sendo adicionada</span>
+            </div>
+        }
+
+        <!-- Descrição do livro -->
+        <div class="detalhes-descricao">
+            <h2>@Model.Titulo</h2>
+            <p><strong>Autor:</strong> @Model.Autor</p>
+            <p><strong>ISBN:</strong> @Model.Isbn</p>
+            <p><strong>Ano de Publicação:</strong> @Model.AnoPublicacao</p>
+            <p><strong>Sinopse:</strong> @Model.Sinopse</p>
+        </div>
+    </div>
+
+    <!-- Disponibilidade abaixo -->
+    <div class="detalhes-disponibilidade">
+        <h4>Disponível nas seguintes instituições:</h4>
+        <ul>
+            @foreach (var instLivro in Model.InstituicaoLivros)
+            {
+                <li>@instLivro.Usuario.NomeFantasia - Quantidade: @instLivro.Quantidade</li>
+            }
+        </ul>
+    </div>
+
+    <a class="btn-voltar" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-arrow-left-circle"></i> Voltar
+    </a>
+}
+
 
