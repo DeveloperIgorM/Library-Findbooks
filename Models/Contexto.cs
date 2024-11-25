@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NewRepository.Models.NewRepository.Models;
 
 namespace NewRepository.Models
 {
@@ -10,6 +11,8 @@ namespace NewRepository.Models
         public DbSet<InstituicaoLivroModel> InstituicaoLivros { get; set; }
 
         public DbSet<TokenModel> Tokens { get; set; }
+        public DbSet<AdministradorModel> Administradores { get; set; }
+
 
         public Contexto(DbContextOptions<Contexto> opcoes) : base(opcoes) { }
 

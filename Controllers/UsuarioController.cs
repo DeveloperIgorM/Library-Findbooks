@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NewRepository.Dto;
 using NewRepository.Models;
+using NewRepository.Services.Adminstrador;
 using NewRepository.Services.UsuarioService;
 
 namespace NewRepository.Controllers
@@ -9,9 +10,11 @@ namespace NewRepository.Controllers
     {
 
         private readonly IUsuarioInterface _usuarioInterface;
+   
         public UsuarioController(IUsuarioInterface usuarioInterface)
         {
             _usuarioInterface = usuarioInterface;
+           
         }
 
         public IActionResult Cadastrar()
@@ -19,6 +22,7 @@ namespace NewRepository.Controllers
             return View();
         }
 
+  
 
 
         [HttpPost]
@@ -82,7 +86,5 @@ namespace NewRepository.Controllers
 
             return BadRequest("Erro ao redefinir senha.");
         }
-
-
     }
 }

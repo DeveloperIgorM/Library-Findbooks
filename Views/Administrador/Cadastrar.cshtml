@@ -1,0 +1,30 @@
+﻿@using NewRepository.Dto
+@model AdministradorCriacaoDto
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>Cadastrar Administrador</h2>
+
+<form method="post" asp-action="Cadastrar" asp-controller="Administrador">
+    <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" asp-for="Nome" class="form-control" placeholder="Digite seu nome" />
+        <span asp-validation-for="Nome" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" asp-for="Email" class="form-control" placeholder="Digite seu email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" asp-for="Senha" class="form-control" placeholder="Digite sua senha" />
+        <span asp-validation-for="Senha" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

@@ -28,6 +28,7 @@ namespace NewRepository.Dto
 
         [Required(ErrorMessage = "Insira o endereço!")]
         public string Endereco { get; set; } = string.Empty;
+   
 
 
         [Required(ErrorMessage = "Insira uma senha!")]

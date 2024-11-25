@@ -151,9 +151,12 @@ namespace NewRepository.Services.UsuarioService
             }
         }
 
-
-
-
-
+        public async Task<IEnumerable<UsuarioModel>> ObterInstituicoesPendentes()
+        {
+            // Busque as instituições pendentes no banco de dados (exemplo: status 0)
+            return await Task.Run(() =>
+                _context.Instituicoes.Where(i => i.Status == 0).ToList()
+            );
+        }
     }
 }

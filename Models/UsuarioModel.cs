@@ -35,6 +35,7 @@ namespace NewRepository.Models
         public byte[] SenhaSalt { get; set; }
 
         public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public int Status { get; set; } = 0;    
 
         public ICollection<LivroModel> Livros { get; set; } = new List<LivroModel>();
         public ICollection<InstituicaoLivroModel> InstituicaoLivros { get; set; } = new List<InstituicaoLivroModel>();

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NewRepository.Models;
 using NewRepository.Services;
+using NewRepository.Services.Adminstrador;
 using NewRepository.Services.EmailService;
 using NewRepository.Services.Livro;
 using NewRepository.Services.SessaoService;
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ISessaoInterface, SessaoService>();
 builder.Services.AddScoped<IExcelInterface, ImportarPlanilhaExcelProjeto.Services.ExcelService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUsuarioInterface, UsuarioService>();
+builder.Services.AddScoped<IAdministradorInterface, AdministradorService>();    
 
 
 builder.Services.AddDbContext<Contexto>(opcoes =>
@@ -44,7 +46,9 @@ app.UseStaticFiles(); // Permite arquivos estáticos (CSS, JS, imagens)
 
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {
