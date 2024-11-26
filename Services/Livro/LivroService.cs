@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.InkML;
 using Microsoft.EntityFrameworkCore;
 using NewRepository.Dto;
+using NewRepository.Filtros;
 using NewRepository.Models;
 using System.Linq.Expressions;
 
@@ -121,6 +122,7 @@ namespace NewRepository.Services.Livro
         }
 
         // Método para editar um livro
+     
         public async Task<LivroModel> EditarLivro(LivroModel livro, IFormFile? foto)
         {
             try

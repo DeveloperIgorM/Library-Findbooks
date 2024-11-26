@@ -121,6 +121,22 @@
                                 <span class="nav-link">@ViewBag.NomeFantasia</span>
                             </li>
                         }
+                        else if (ViewBag.AdministradorLogado == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Administrador" asp-action="Index"><i class="bi bi-book"></i>Livros</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Administrador" asp-action="Pendentes"><i class="bi bi-book"></i> Instituiçoes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Administrador" asp-action="Sair"><i class="bi bi-box-arrow-in-left"></i> Sair</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- Exibe o nome do usuário logado (NomeFantasia) -->
+                                <span class="nav-link">@ViewBag.Nome</span>
+                            </li>
+                        }
                         else
                         {
                             <li class="nav-item">
@@ -130,6 +146,7 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login"><i class="bi bi-box-arrow-in-right"></i> Login</a>
                             </li>
                         }
+
                     </ul>
                 </div>
             </div>

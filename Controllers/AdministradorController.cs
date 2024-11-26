@@ -25,6 +25,8 @@ public class AdministradorController : Controller
 
     }
 
+   
+
     public IActionResult Login()
     {
         return View();
@@ -42,12 +44,13 @@ public class AdministradorController : Controller
 
     public async Task<IActionResult> Index(string? pesquisar)
     {
-        var AdmLogado = _sessaoInterface.BuscarSessaoAdm();
-        ViewBag.AdmLogado = AdmLogado != null;
+        var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
+        ViewBag.AdministradorLogado = AdministradorLogado != null ? true : false;
 
-        if (AdmLogado != null)
+
+        if (AdministradorLogado != null)
         {
-            ViewBag.Nome = AdmLogado.Nome;
+            ViewBag.Nome = AdministradorLogado.Nome;
         }
 
         // Busca todos os livros ou com filtro
@@ -62,12 +65,6 @@ public class AdministradorController : Controller
         }
 
         return View(livros);
-    }
-
-
-    public IActionResult Home()
-    {
-        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
@@ -110,10 +107,10 @@ public class AdministradorController : Controller
                 TempData["MensagemSucesso"] = "Administrador logado com sucesso!";
                 _sessaoInterface.CriarSessaoAdm(administrador); // Cria a sessão com o usuário logado
 
-                // Salva o NomeFantasia na sessão para ser exibido na barra de navegação
+                
                 HttpContext.Session.SetString("Nome", administrador.Nome);
 
-                return RedirectToAction("Index", "Livros");
+                return RedirectToAction("Index", "Administrador");
             }
         }
         else

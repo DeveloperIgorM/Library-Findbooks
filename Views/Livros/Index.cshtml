@@ -166,6 +166,11 @@
             <a class="btn btn-primary" asp-controller="Livros" asp-action="Cadastrar">Cadastrar Novo Livro</a>
             <button type="submit" class="btn btn-primary">Importar</button>
         }
+         @if (ViewBag.AdministradorLogado)
+        {          
+            <a class="btn btn-primary" asp-controller="Livros" asp-action="Cadastrar">Cadastrar Novo Livro</a>
+            <button type="submit" class="btn btn-primary">Importar</button>
+        }
         else
         {
             <p class="text-center text-danger">Por favor, faça login para cadastrar livros.</p>

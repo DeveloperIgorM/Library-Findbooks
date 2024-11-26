@@ -35,13 +35,20 @@ namespace NewRepository.Controllers
         public async Task<IActionResult> Index(string? pesquisar)
         {
             var usuarioLogado = _sessaoInterface.BuscarSessao();
+            var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
+
             ViewBag.UsuarioLogado = usuarioLogado != null;
+            ViewBag.AdministradorLogado = AdministradorLogado != null;
 
             if (usuarioLogado != null)
             {
                 ViewBag.NomeFantasia = usuarioLogado.NomeFantasia;
             }
 
+            if (AdministradorLogado != null)
+            {
+                ViewBag.Nome = AdministradorLogado.Nome;
+            }
             // Busca todos os livros ou com filtro
             var livros = pesquisar == null
                 ? await _livroInterface.GetLivros()

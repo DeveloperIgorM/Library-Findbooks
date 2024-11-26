@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NewRepository.Dto;
 using NewRepository.Filtros;
 using NewRepository.Models;
+using NewRepository.Models.NewRepository.Models;
 using NewRepository.Services;
 using NewRepository.Services.Livro;
 using NewRepository.Services.SessaoService;
@@ -28,30 +29,39 @@ namespace NewRepository.Controllers
             _excelInterface = excelInterface;
         }
 
+        [AdministradorLogado]
         [UsuarioLogado]
         public async Task<IActionResult> Index()
         {
             var usuarioLogado = _sessaoService.BuscarSessao();
-            var AdministradorLogado = _sessaoService.BuscarSessaoAdm();
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
 
             List<LivroModel> livros;
 
-            if (usuarioLogado != null)
+            if (administradorLogado != null)
+            {
+                ViewBag.Nome = administradorLogado.Nome;
+                // Administrador visualiza todos os livros
+                livros = await _livroInterface.GetLivros();
+                ViewBag.AdministradorLogado = true;
+            }
+            else if (usuarioLogado != null)
             {
                 ViewBag.NomeFantasia = usuarioLogado.NomeFantasia; // Passa o NomeFantasia para a ViewBag
-                // Retorna os livros cadastrados pelo usuário logado
+                                                                   // Usuário visualiza apenas os livros cadastrados por ele
                 livros = await _livroInterface.GetLivrosPorUsuario(usuarioLogado.Id);
-                ViewBag.UsuarioLogado = true; // Define que o usuário está logado
+                ViewBag.UsuarioLogado = true;
             }
             else
             {
-                // Retorna todos os livros
-                livros = await _livroInterface.GetLivros();
-                ViewBag.UsuarioLogado = false; // Define que o usuário não está logado
+                // Nenhum usuário logado
+                livros = new List<LivroModel>();
+                ViewBag.UsuarioLogado = false;
             }
 
             return View(livros);
         }
+
 
         public IActionResult Cadastrar()
         {
@@ -73,6 +83,9 @@ namespace NewRepository.Controllers
             var usuarioLogado = _sessaoService.BuscarSessao();
             ViewBag.UsuarioLogado = usuarioLogado != null; // Define true se há sessão, caso contrário false
 
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
+            ViewBag.administradorLogado = administradorLogado != null;
+
             // Carrega o livro com as instituições e seus respectivos usuários relacionados
             var livro = await _context.Livros
                 .Include(l => l.InstituicaoLivros) // Carrega as instituições relacionadas ao livro
@@ -86,17 +99,18 @@ namespace NewRepository.Controllers
 
             return View(livro);  // Passa o livro com as instituições e quantidades para a View
         }
-
         public async Task<IActionResult> Editar(int id)
         {
+            // Verifica se o usuário ou administrador está logado
             var usuarioLogado = _sessaoService.BuscarSessao();
-            if (usuarioLogado == null)
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
+
+            if (usuarioLogado == null && administradorLogado == null)
             {
-                ViewBag.UsuarioLogado = false; // Define que o usuário não está logado
-                return Unauthorized(); // Caso a sessão esteja expirada ou inválida
+                return Unauthorized(); // Retorna 401 caso nenhum esteja logado
             }
 
-            ViewBag.UsuarioLogado = true; // Define que o usuário está logado
+            // Busca o livro pelo ID
             var livro = await _livroInterface.GetLivroPorId(id);
 
             if (livro == null)
@@ -104,13 +118,39 @@ namespace NewRepository.Controllers
                 return NotFound(); // Retorna 404 se o livro não for encontrado
             }
 
-            return View(livro);
+            // Verifica se o usuário logado tem permissão para editar o livro
+            if (usuarioLogado != null && livro.UsuarioId != usuarioLogado.Id)
+            {
+                return Forbid(); // Retorna 403 se o usuário tentar editar um livro que não cadastrou
+            }
+
+            // Define informações na ViewBag
+            if (administradorLogado != null)
+            {
+                ViewBag.AdministradorLogado = true;
+                ViewBag.Nome = administradorLogado.Nome;
+            }
+            else
+            {
+                ViewBag.AdministradorLogado = false;
+                ViewBag.NomeFantasia = usuarioLogado.NomeFantasia;
+            }
+
+            return View(livro); // Retorna a view com os dados do livro
         }
+
 
         public async Task<IActionResult> Remover(int id)
         {
             var usuarioLogado = _sessaoService.BuscarSessao();
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
+
             if (usuarioLogado == null)
+            {
+                return Unauthorized(); // Caso a sessão esteja expirada ou inválida
+            }
+
+            if (administradorLogado == null)
             {
                 return Unauthorized(); // Caso a sessão esteja expirada ou inválida
             }
@@ -122,8 +162,14 @@ namespace NewRepository.Controllers
         public async Task<IActionResult> MeusLivros(string? isbn)
         {
             var usuarioLogado = _sessaoService.BuscarSessao(); // Buscar o usuário logado
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
 
             if (usuarioLogado == null)
+            {
+                return Unauthorized(); // Caso a sessão esteja expirada ou inválida
+            }
+
+            if (administradorLogado == null)
             {
                 return Unauthorized(); // Caso a sessão esteja expirada ou inválida
             }
@@ -198,7 +244,15 @@ namespace NewRepository.Controllers
         {
             // Recupera o usuário logado
             var usuarioLogado = _sessaoService.BuscarSessao();
+            var administradorLogado = _sessaoService.BuscarSessaoAdm();
+
+
             if (usuarioLogado == null)
+            {
+                throw new UnauthorizedAccessException("Usuário não autorizado ou sessão expirada.");
+            }
+
+            if (administradorLogado == null)
             {
                 throw new UnauthorizedAccessException("Usuário não autorizado ou sessão expirada.");
             }

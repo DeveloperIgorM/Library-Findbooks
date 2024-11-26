@@ -50,6 +50,7 @@ namespace NewRepository.Services.SessaoService
         public void RemoverSessao()
         {
             _httpAcessor.HttpContext.Session.Remove("UsuarioAtivo");
+            _httpAcessor.HttpContext.Session.Remove("AdministradorAtivo");
         }
     }
 }
