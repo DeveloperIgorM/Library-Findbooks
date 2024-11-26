@@ -16,58 +16,54 @@ namespace NewRepository.Services.Adminstrador
             _context = context;
         }
 
-        private bool VerificarSenha(string senha, byte[] senhaHash, byte[] senhaSalt)
+
+        public async Task<AdministradorModel> Login(AdministradorCriacaoDto administradorDto)
         {
-            using (var hmac = new HMACSHA512(senhaSalt))
+            try
             {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(senha));
-                return computedHash.SequenceEqual(senhaHash);
+                var administrador = await _context.Administradores.FirstOrDefaultAsync(user => user.Email == administradorDto.Email);
+
+                if (administrador == null)
+                {
+                    return new AdministradorModel();
+                }
+
+                if (!VerificarSenha(administradorDto.Senha, administrador.SenhaHash, administrador.SenhaSalt))
+                {
+                    return new AdministradorModel();
+                }
+
+                return administrador;
+
             }
-        }
-
-        public async Task<bool> ValidarAdministrador(int id)
-        {
-            return await _context.Administradores.AnyAsync(a => a.Id == id);
-        }
-
-        async Task<AdministradorModel> IAdministradorInterface.Login(string email, string senha)
-        {
-            var admin = await _context.Administradores.FirstOrDefaultAsync(a => a.Email == email);
-
-            if (admin == null || !VerificarSenha(senha, admin.SenhaHash, admin.SenhaSalt))
-                return null;
-
-            return admin;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<AdministradorModel> Cadastrar(AdministradorCriacaoDto administradorDto)
         {
             try
             {
-                // Gerar o hash e salt da senha
                 CriarSenhaHash(administradorDto.Senha, out byte[] senhaHash, out byte[] senhaSalt);
 
-                // Criar a instância do administrador com os dados fornecidos
                 var administrador = new AdministradorModel()
                 {
-
                     Email = administradorDto.Email,
                     SenhaHash = senhaHash,
-                    SenhaSalt = senhaSalt,
-
+                    SenhaSalt = senhaSalt
                 };
 
-                // Adicionar ao banco de dados
-                _context.Administradores.Add(administrador);
+                _context.Add(administrador);
                 await _context.SaveChangesAsync();
 
-                // Retornar o administrador criado
                 return administrador;
+
             }
             catch (Exception ex)
             {
-                // Lançar uma exceção com a mensagem de erro
-                throw new Exception($"Erro ao cadastrar administrador: {ex.Message}");
+                throw new Exception(ex.Message);
             }
         }
         private void CriarSenhaHash(string senha, out byte[] senhaHash, out byte[] senhaSalt)
@@ -76,6 +72,14 @@ namespace NewRepository.Services.Adminstrador
             {
                 senhaSalt = hmac.Key;
                 senhaHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(senha));
+            }
+        }
+        private bool VerificarSenha(string senha, byte[] senhaHash, byte[] senhaSalt)
+        {
+            using (var hmac = new HMACSHA512(senhaSalt))
+            {
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(senha));
+                return computedHash.SequenceEqual(senhaHash);
             }
         }
     }

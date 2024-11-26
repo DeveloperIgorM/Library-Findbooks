@@ -1,30 +1,153 @@
 ﻿@using NewRepository.Dto
 @model AdministradorCriacaoDto
 
+
 @{
     Layout = "_Layout";
 }
 
-<h2>Cadastrar Administrador</h2>
+<style>
+    /* Estilo geral */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #7B68EE);
+        margin: 0;
+        padding: 0;
+    }
 
-<form method="post" asp-action="Cadastrar" asp-controller="Administrador">
-    <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" asp-for="Nome" class="form-control" placeholder="Digite seu nome" />
-        <span asp-validation-for="Nome" class="text-danger"></span>
-    </div>
+    .container {
+        max-width: 750px;
+        margin: 35px auto;
+        background: linear-gradient(135deg, #f5f7fa, #808080);
+        border-radius: 15px;
+        border: 2px solid black;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+     
+    }
 
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" asp-for="Email" class="form-control" placeholder="Digite seu email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2rem;
+    }
 
-    <div class="form-group">
-        <label for="senha">Senha</label>
-        <input type="password" id="senha" asp-for="Senha" class="form-control" placeholder="Digite sua senha" />
-        <span asp-validation-for="Senha" class="text-danger"></span>
-    </div>
+    form {
+        display: flex;
+        flex-direction: column;
+    }
 
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
-</form>
+    .form-label {
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .form-control {
+        padding: 12px;
+        border-radius: 5px;
+        border: 2px solid #ccc;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: none;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-info:hover {
+        background-color: #138496;
+    }
+
+    .btn-box {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn-box button, .btn-box a {
+        width: 48%;
+        text-align: center;
+    }
+
+    /* Mensagens de validação */
+    .text-danger {
+        font-size: 0.85rem;
+        color: #dc3545;
+        margin-top: 5px;
+    }
+
+    /* Responsividade */
+    media (max-width: 768px) {
+        .container {
+            padding: 20px;
+        }
+
+        .btn-box {
+            flex-direction: column;
+        }
+
+        .btn-box button, .btn-box a {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
+<div class="container mt-5">
+    <form method="post" asp-action="Cadastrar" asp-controller="Administrador">
+        <h2>Cadastro de Administradores</h2>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email:</label>
+            <input type="email" asp-for="Email" class="form-control shadow-none" placeholder="Digite seu email" />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Nome" class="form-label">Nome:</label>
+            <input type="text" asp-for="Nome" class="form-control shadow-none" placeholder="Digite seu Nome" />
+            <span class="text-danger" asp-validation-for="Nome"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="Senha" class="form-label">Senha:</label>
+            <input type="password" asp-for="Senha" class="form-control shadow-none" placeholder="Digite a senha" />
+            <span class="text-danger" asp-validation-for="Senha"></span>
+        </div>
+
+        <div class="btn-box d-flex mt-3">
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <a class="btn btn-info" asp-controller="Administrador" asp-action="Index">Voltar</a>
+        </div>
+    </form>
+</div>

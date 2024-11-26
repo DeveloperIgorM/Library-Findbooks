@@ -51,6 +51,14 @@ namespace NewRepository.Controllers
             }
         }
 
+        
+        public async Task<IActionResult> SolicitarRedefinicaoSenha()
+        {
+            
+            return View();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> SolicitarRedefinicaoSenha(string email)
         {
@@ -68,6 +76,7 @@ namespace NewRepository.Controllers
             TempData["MensagemSucesso"] = "Email de redefinição de senha enviado.";
             return RedirectToAction("SolicitarRedefinicaoSenha");
         }
+
 
 
         [HttpPost]

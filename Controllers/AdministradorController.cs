@@ -2,20 +2,26 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewRepository.Dto;
+using NewRepository.Models;
+using NewRepository.Models.NewRepository.Models;
 using NewRepository.Services.Adminstrador;
+using NewRepository.Services.Livro;
+using NewRepository.Services.SessaoService;
 using NewRepository.Services.UsuarioService;
 using System.Security.Claims;
 
 public class AdministradorController : Controller
 {
-    private readonly IAdministradorInterface _administradorService;
-    private readonly IUsuarioInterface _usuarioInterface;
+    private readonly IAdministradorInterface _administradorInterface;
+    private readonly ILivroInterface _livroInterface;
+    private readonly ISessaoInterface _sessaoInterface;
 
 
-    public AdministradorController(IAdministradorInterface administradorService, IUsuarioInterface usuarioInterface)
+    public AdministradorController(IAdministradorInterface administradorInterface, ISessaoInterface sessaoInterface, ILivroInterface livroInterface)
     {
-        _administradorService = administradorService;
-        _usuarioInterface = usuarioInterface;
+        _administradorInterface = administradorInterface;
+        _livroInterface = livroInterface;
+        _sessaoInterface = sessaoInterface;
 
     }
 
@@ -28,6 +34,41 @@ public class AdministradorController : Controller
     {
         return View();
     }
+    public IActionResult Sair()
+    {
+        _sessaoInterface.RemoverSessao();
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Index(string? pesquisar)
+    {
+        var AdmLogado = _sessaoInterface.BuscarSessaoAdm();
+        ViewBag.AdmLogado = AdmLogado != null;
+
+        if (AdmLogado != null)
+        {
+            ViewBag.Nome = AdmLogado.Nome;
+        }
+
+        // Busca todos os livros ou com filtro
+        var livros = pesquisar == null
+            ? await _livroInterface.GetLivros()
+            : await _livroInterface.GetLivrosFiltro(pesquisar);
+
+        // Busca informações de instituições e quantidades para cada livro
+        foreach (var livro in livros)
+        {
+            livro.InstituicaoLivros = await _livroInterface.GetInstituicaoLivroPorLivro(livro.Isbn);
+        }
+
+        return View(livros);
+    }
+
+
+    public IActionResult Home()
+    {
+        return RedirectToAction("Index", "Home");
+    }
 
     [HttpPost]
     public async Task<IActionResult> Cadastrar(AdministradorCriacaoDto administradorDto)
@@ -39,7 +80,7 @@ public class AdministradorController : Controller
 
         try
         {
-            var novoAdministrador = await _administradorService.Cadastrar(administradorDto);
+            var novoAdministrador = await _administradorInterface.Cadastrar(administradorDto);
             TempData["MensagemSucesso"] = "Administrador criado com sucesso!";
             return RedirectToAction("Login");
         }
@@ -53,42 +94,32 @@ public class AdministradorController : Controller
 
     [HttpPost]
 
-    public async Task<IActionResult> Login(string email, string senha)
+    public async Task<ActionResult<AdministradorModel>> Login(AdministradorCriacaoDto administradorDto)
     {
-        var admin = await _administradorService.Login(email, senha);
-
-        if (admin == null)
+        if (ModelState.IsValid)
         {
-            TempData["MensagemErro"] = "Credenciais inválidas.";
-            return View();
+            var administrador = await _administradorInterface.Login(administradorDto);
+
+            if (administrador.Id == 0)
+            {
+                TempData["MensagemErro"] = "Credenciais inválidas!";
+                return View(administradorDto);
+            }
+            else
+            {
+                TempData["MensagemSucesso"] = "Administrador logado com sucesso!";
+                _sessaoInterface.CriarSessaoAdm(administrador); // Cria a sessão com o usuário logado
+
+                // Salva o NomeFantasia na sessão para ser exibido na barra de navegação
+                HttpContext.Session.SetString("Nome", administrador.Nome);
+
+                return RedirectToAction("Index", "Livros");
+            }
         }
-
-        // Autenticar o administrador (exemplo usando Claims)
-        var claims = new List<Claim>
+        else
         {
-            new Claim(ClaimTypes.Email, admin.Email),
-            new Claim("Id", admin.Id.ToString())
-        };
-
-        var identity = new ClaimsIdentity(claims, "Login");
-        var principal = new ClaimsPrincipal(identity);
-        await HttpContext.SignInAsync(principal);
-
-        return RedirectToAction("InstituicoesPendentes", "Usuario");
+            return View(administradorDto);
+        }
+    }
     }
 
-    [Authorize]
-    public async Task<IActionResult> InstituicoesPendentes()
-    {
-        // Verifica se o usuário atual é um administrador
-        var adminId = Convert.ToInt32(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Id")?.Value);
-
-        if (!await _administradorService.ValidarAdministrador(adminId))
-        {
-            return Unauthorized(); // Retorna 401 se não for um administrador
-        }
-
-        var instituicoesPendentes = await _usuarioInterface.ObterInstituicoesPendentes();
-        return View(instituicoesPendentes);
-    }
-}

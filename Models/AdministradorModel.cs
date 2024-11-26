@@ -8,10 +8,11 @@
         {
             [Key]
             public int Id { get; set; }
+            public string Nome { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Insira um Email!")]
             [EmailAddress(ErrorMessage = "Insira um Email válido!")]
-            public string Email { get; set; }
+            public string Email { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Insira uma senha!")]
             public byte[] SenhaHash { get; set; }

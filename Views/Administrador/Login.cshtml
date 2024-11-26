@@ -1,5 +1,5 @@
 ﻿@using NewRepository.Dto
-@model LoginDto
+@model AdministradorCriacaoDto
 
 @{
     Layout = "_Layout";
@@ -11,7 +11,6 @@
         @TempData["MensagemErro"]
     </div>
 }
-
 <style>
     body, html {
         margin: 0;
@@ -140,7 +139,6 @@
                 text-decoration: underline;
             }
 
-
 </style>
 
 <!-- Container do login -->
@@ -156,6 +154,13 @@
         <div class="login-form-content">
             <h1 class="login-title">Administrador</h1>
             <form method="post" asp-controller="Administrador" asp-action="Login">
+
+                <div class="form-group">
+                    <label for="name">Username</label>
+                    <input type="name" id="name" asp-for="Nome " class="form-control" placeholder="Digite seu Nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+
                 <div class="form-group">
                     <label for="email">Username</label>
                     <input type="email" id="email" asp-for="Email" class="form-control" placeholder="Digite seu usuário" />
@@ -168,13 +173,16 @@
                     <span asp-validation-for="Senha" class="text-danger"></span>
                 </div>
 
+                <div class="form-check">
+                    <input type="checkbox" id="rememberMe" class="form-check-input" />
+                    <label for="rememberMe">Salvar Usuário</label>
+                </div>
+
                 <button type="submit" class="btn-primary">Avançar</button>
             </form>
-
-            <div class="login-links">
-                <a asp-controller="Usuario" asp-action="SolicitarRedefinicaoSenha">Esqueceu sua senha?</a>
-            </div>
         </div>
     </div>
 </div>
+
+
 

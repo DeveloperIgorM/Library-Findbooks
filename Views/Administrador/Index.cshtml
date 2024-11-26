@@ -1,5 +1,289 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<style>
+    /* Estilo geral */
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #7B68EE);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 45px 20px 20px;
+    }
+
+    /* Barra de pesquisa */
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .search-input {
+        padding: 10px;
+        border-radius: 25px;
+        border: 2px solid #007bff;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 600px;
+        box-sizing: border-box;
+    }
+
+        .search-input:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+
+    .search-button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        border-radius: 25px;
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+    }
+
+        .search-button:hover {
+            background-color: #ffdd57; /* Cor dourada/bege */
+            color: black; /* Texto preto */
+        }
+
+    /* Estilo dos Cards e do efeito de Flip */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 20px;
+    }
+
+    .book-card {
+        width: 21%;
+        perspective: 1000px;
+    }
+
+    .book-card-inner {
+        position: relative;
+        width: 100%;
+        padding-top: 135%;
+        transform-style: preserve-3d;
+        transition: transform 0.8s;
+    }
+
+    .book-card:hover .book-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .book-card-front, .book-card-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-card-front {
+        background-color: #808080;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+    .book-card-back {
+        background-color: #333;
+        color: #fff;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .book-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: none;
+        font-size: 1rem;
+        width: 80%;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin-top: 15px;
+    }
+
+        /* Novo estilo para o botão ao passar o mouse */
+        .book-button:hover {
+            background-color: #ffdd57; /* Cor dourada/bege */
+            color: black; /* Texto preto */
+        }
+
+    #backToTop {
+        display: none;
+        position: fixed;
+        bottom: 65px;
+        right: 20px;
+        z-index: 99;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 18px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+        #backToTop:hover {
+            background-color: #0056b3;
+        }
+
+    /* Card sem capa */
+    .book-card-front.no-cover {
+        background-color: #007bff; /* Cor de destaque */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+        .book-card-front.no-cover .no-cover-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+    .book-card-front .card-image img {
+        border-radius: 15px;
+    }
+</style>
+
+@model IEnumerable<LivroModel>
+
+<div class="container">
+    <!-- Barra de pesquisa -->
+    <div class="text-center mb-5">
+        <form method="get" asp-action="Index" asp-controller="Home" class="search-bar">
+            <input name="pesquisar" class="form-control search-input" placeholder="Pesquise seu livro..." />
+            <button type="submit" class="btn btn-primary search-button">Pesquisar</button>
+        </form>
+    </div>
+
+    <!-- Cards dos livros -->
+    <div class="row">
+        @if (Model != null && Model.Count() > 0)
+        {
+            @foreach (var livro in Model)
+            {
+                <div class="book-card">
+                    <div class="book-card-inner">
+                        @if (!string.IsNullOrEmpty(livro.Capa))
+                        {
+                            <!-- Livro com capa -->
+                            <div class="book-card-front">
+                                <div class="card-image">
+                                    <img src="~/imagem/@livro.Capa" alt="@livro.Titulo">
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Livro sem capa -->
+                            <div class="book-card-front no-cover">
+                                <h3 class="no-cover-title">@livro.Titulo</h3>
+                            </div>
+                        }
+
+                        <div class="book-card-back">
+                            <h5 class="card-title">@livro.Titulo</h5>
+                            <p>Autor: @livro.Autor</p>
+                            <p>ISBN: @livro.Isbn</p>
+                            <h6>Instituições com este livro:</h6>
+                            <ul>
+                                @foreach (var instLivro in livro.InstituicaoLivros)
+                                {
+                                    <li>@instLivro.Usuario.NomeFantasia - Quantidade: @instLivro.Quantidade</li>
+                                }
+                            </ul>
+                            <a href="@Url.Action("Detalhes", "Livros", new { id = livro.Id })" class="book-button">Ver Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+<button id="backToTop" title="Voltar ao topo">↑</button>
+
+<!-- Ícones fixos no final da página -->
+<div style="position: fixed; bottom: 60px; left: 20px; display: flex; flex-direction: column; align-items: center;">
+    <a href="https://www.instagram.com" target="_blank" style="margin: 5px;">
+        <i class="bi bi-instagram" style="font-size: 24px;"></i>
+    </a>
+    <a href="https://www.twitter.com" target="_blank" style="margin: 5px;">
+        <i class="bi bi-twitter" style="font-size: 24px;"></i>
+    </a>
+    <a href="https://www.facebook.com" target="_blank" style="margin: 5px;">
+        <i class="bi bi-facebook" style="font-size: 24px;"></i>
+    </a>
+    <a href="https://github.com/DeveloperIgorM/NewRepository" target="_blank" style="margin: 5px;">
+        <i class="bi bi-github" style="font-size: 24px;"></i>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const cards = document.querySelectorAll('.book-card');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.8s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 150);
+        });
+    });
+
+    window.onscroll = function () {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("backToTop").style.display = "block";
+        } else {
+            document.getElementById("backToTop").style.display = "none";
+        }
+    }
+
+    document.getElementById("backToTop").onclick = function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+</script>

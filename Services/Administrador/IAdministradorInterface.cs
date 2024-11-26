@@ -5,8 +5,7 @@ namespace NewRepository.Services.Adminstrador
 {
     public interface IAdministradorInterface
     {
-        Task<AdministradorModel> Login(string email, string senha);
-        Task<bool> ValidarAdministrador(int id);
+        Task<AdministradorModel> Login(AdministradorCriacaoDto administradorDto);
         Task<AdministradorModel> Cadastrar(AdministradorCriacaoDto administradorDto);
 
     }

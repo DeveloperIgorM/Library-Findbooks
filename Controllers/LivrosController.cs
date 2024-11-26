@@ -32,6 +32,8 @@ namespace NewRepository.Controllers
         public async Task<IActionResult> Index()
         {
             var usuarioLogado = _sessaoService.BuscarSessao();
+            var AdministradorLogado = _sessaoService.BuscarSessaoAdm();
+
             List<LivroModel> livros;
 
             if (usuarioLogado != null)
