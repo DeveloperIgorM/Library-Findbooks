@@ -16,7 +16,6 @@
     body, html {
         margin: 0;
         padding: 0;
-        height: 100%;
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #f5f7fa, #7B68EE);
         display: flex;
@@ -24,6 +23,9 @@
         justify-content: space-between;
     }
 
+    .alert {
+        margin-top:0px;
+    }
     /* Wrapper principal */
     .login-wrapper {
         display: flex;
@@ -157,7 +159,7 @@
             <h1 class="login-title">Entrar</h1>
             <form method="post" asp-controller="Home" asp-action="Login">
                 <div class="form-group">
-                    <label for="email">Username</label>
+                    <label for="email">E-mail</label>
                     <input type="email" id="email" asp-for="Email" class="form-control" placeholder="Digite seu usuário" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>

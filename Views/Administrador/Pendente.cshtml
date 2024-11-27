@@ -1,0 +1,44 @@
+﻿@using NewRepository.Dto
+@model List<UsuarioModel>
+
+@if (ViewBag.AdministradorLogado)
+    {
+        
+    <h2>Instituições Pendentes de Aprovação</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>CNPJ</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var instituicao in Model)
+            {
+                <tr>
+                    <td>@instituicao.NomeFantasia</td>
+                    <td>@instituicao.Email</td>
+                    <td>@instituicao.Telefone</td>
+                    <td>@instituicao.Cnpj</td>
+                    <td>@instituicao.Endereco</td>
+                    <td>
+                        <form method="post" asp-action="AtualizarStatusInstituicao">
+                            <input type="hidden" name="id" value="@instituicao.Id" />
+                            <button type="submit" name="status" value="1" class="btn btn-success">Aceitar</button>
+                            <button type="submit" name="status" value="0" class="btn btn-danger">Recusar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-center text-danger">Por favor, faça login para acessar   .</p>
+}

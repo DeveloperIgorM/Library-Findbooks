@@ -64,24 +64,24 @@ namespace NewRepository.Services.UsuarioService
             {
                 var usuario = await _context.Instituicoes.FirstOrDefaultAsync(user => user.Email == loginDto.Email);
 
-                if (usuario == null)
+                if (usuario == null || usuario.Status == 0) // Verifica se o status é "0" ou se o usuário não existe
                 {
-                    return new UsuarioModel();
+                    return new UsuarioModel(); // Retorna vazio para indicar falha no login
                 }
 
                 if (!VerificarSenha(loginDto.Senha, usuario.SenhaHash, usuario.SenhaSalt))
                 {
-                    return new UsuarioModel();
+                    return new UsuarioModel(); // Retorna vazio se a senha estiver incorreta
                 }
 
-                return usuario;
-
+                return usuario; // Retorna o usuário se as verificações passarem
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
 
         private bool VerificarSenha(string senha, byte[] senhaHash, byte[] senhaSalt)
         {
@@ -157,6 +157,6 @@ namespace NewRepository.Services.UsuarioService
             return await Task.Run(() =>
                 _context.Instituicoes.Where(i => i.Status == 0).ToList()
             );
-        }
+        }  
     }
 }

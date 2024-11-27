@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewRepository.Dto;
+using NewRepository.Filtros;
 using NewRepository.Models;
 using NewRepository.Models.NewRepository.Models;
 using NewRepository.Services.Adminstrador;
 using NewRepository.Services.Livro;
 using NewRepository.Services.SessaoService;
 using NewRepository.Services.UsuarioService;
+using SQLitePCL;
 using System.Security.Claims;
 
 public class AdministradorController : Controller
@@ -15,14 +17,15 @@ public class AdministradorController : Controller
     private readonly IAdministradorInterface _administradorInterface;
     private readonly ILivroInterface _livroInterface;
     private readonly ISessaoInterface _sessaoInterface;
+    private readonly Contexto _context;
 
 
-    public AdministradorController(IAdministradorInterface administradorInterface, ISessaoInterface sessaoInterface, ILivroInterface livroInterface)
+    public AdministradorController(IAdministradorInterface administradorInterface, ISessaoInterface sessaoInterface, ILivroInterface livroInterface, Contexto context)
     {
         _administradorInterface = administradorInterface;
         _livroInterface = livroInterface;
         _sessaoInterface = sessaoInterface;
-
+        _context = context;
     }
 
    
@@ -118,5 +121,60 @@ public class AdministradorController : Controller
             return View(administradorDto);
         }
     }
+    [HttpGet]
+    public async Task<IActionResult>Pendente()
+    {
+        var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
+        ViewBag.AdministradorLogado = AdministradorLogado != null ? true : false;
+
+
+        if (AdministradorLogado != null)
+        {
+            ViewBag.Nome = AdministradorLogado.Nome;
+        
+
+        var Pendente = await _administradorInterface.Pendente();
+            return View(Pendente); // Retorna para a View
+        }else
+        {
+            return View(null);
+        }
     }
+    [AdministradorLogado]
+    [HttpPost]
+    public async Task<IActionResult> AtualizarStatusInstituicao(int id, int status)
+    {
+        try
+        {
+ 
+                // Verifica se o status é válido ("0" ou "1")
+                if (status != 0 && status != 1)
+            {
+                TempData["MensagemErro"] = "Status inválido!";
+                return RedirectToAction("Pendente");
+            }
+            
+
+                var instituicao = await _context.Instituicoes.FindAsync(id);
+            if (instituicao != null)
+            {
+                instituicao.Status = status; // Atualiza o status para "1" (ativo) ou "0" (inativo)
+                _context.Instituicoes.Update(instituicao);
+                await _context.SaveChangesAsync();
+                TempData["MensagemSucesso"] = "Status atualizado com sucesso!";
+            }
+            else
+            {
+                TempData["MensagemErro"] = "Instituição não encontrada!";
+            }
+
+            return RedirectToAction("Pendente");
+        }
+        catch (Exception ex)
+        {
+            TempData["MensagemErro"] = $"Erro ao atualizar status: {ex.Message}";
+            return RedirectToAction("Pendente");
+        }
+    }
+}
 

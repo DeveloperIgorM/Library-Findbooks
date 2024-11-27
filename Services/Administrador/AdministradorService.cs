@@ -82,5 +82,19 @@ namespace NewRepository.Services.Adminstrador
                 return computedHash.SequenceEqual(senhaHash);
             }
         }
+
+        public async Task<List<UsuarioModel>> Pendente()
+        {
+            try
+            {
+                return await _context.Instituicoes
+                    .Where(instituicao => instituicao.Status == 0) // Filtra instituições com status "0"
+                    .ToListAsync(); // Retorna a lista de instituições pendentes
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

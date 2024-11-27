@@ -124,6 +124,7 @@ namespace NewRepository.Controllers
                 return Forbid(); // Retorna 403 se o usuário tentar editar um livro que não cadastrou
             }
 
+ 
             // Define informações na ViewBag
             if (administradorLogado != null)
             {
@@ -322,13 +323,22 @@ namespace NewRepository.Controllers
         public async Task<IActionResult> Editar(LivroModel livro, IFormFile? foto)
         {
             var usuarioLogado = _sessaoService.BuscarSessao();
+            var AdministradorLogado = _sessaoService.BuscarSessaoAdm();
+
+
             if (usuarioLogado == null)
             {
                 ViewBag.UsuarioLogado = false; // Define que o usuário não está logado
                 return RedirectToAction("Login", "Usuario"); // Redireciona para a página de login caso a sessão esteja expirada
             }
+            if (AdministradorLogado == null)
+            {
+                ViewBag.AdministradorLogado = false; 
+                return RedirectToAction("Login", "Administrador"); 
+            }
 
             ViewBag.UsuarioLogado = true;
+            ViewBag.AdministradorLogado = true;
 
             if (ModelState.IsValid)
             {

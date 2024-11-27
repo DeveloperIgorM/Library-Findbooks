@@ -88,7 +88,6 @@ namespace NewRepository.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<ActionResult<UsuarioModel>> Login(LoginDto loginDto)
         {
@@ -96,9 +95,12 @@ namespace NewRepository.Controllers
             {
                 var usuario = await _usuarioInterface.Login(loginDto);
 
-                if (usuario.Id == 0)
+                // Verifica se o Id do usuário é válido e se o Status é "1"
+                if (usuario.Id == 0 || usuario.Status != 1)
                 {
-                    TempData["MensagemErro"] = "Credenciais inválidas!";
+                    TempData["MensagemErro"] = usuario.Status != 1
+                        ? "Acesso negado! Instituição inativa ou pendente de aprovação."
+                        : "Credenciais inválidas!";
                     return View(loginDto);
                 }
                 else
@@ -117,5 +119,6 @@ namespace NewRepository.Controllers
                 return View(loginDto);
             }
         }
+
     }
 }

@@ -12,6 +12,7 @@ namespace NewRepository.Services.UsuarioService
         Task EnviarEmailRedefinicaoSenha(string email, string callbackUrl);
         Task<bool> RedefinirSenha(string email, string token, string novaSenha);
         Task<UsuarioModel> ObterPorEmailAsync(string email);
-        Task<IEnumerable<UsuarioModel>> ObterInstituicoesPendentes();
+        
+
     }
 }
