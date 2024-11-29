@@ -125,7 +125,8 @@
 </style>
 
 <div class="container">
-    @if (ViewBag.UsuarioLogado ?? false)
+    <!--if (ViewBag.UsuarioLogado ?? false) -->
+      
     {
         <form method="post" asp-action="Editar" asp-controller="Livros" enctype="multipart/form-data">
             <h2>Edição de Livros - @Model.Titulo</h2>
@@ -198,12 +199,12 @@
             </div>
         </form>
     }
-    else
+  <!--  else
     {
         <div class="alert alert-danger text-center" role="alert">
             Você precisa estar logado para acessar esta página.
         </div>
-    }
+      }-->
 </div>
 
 <script>
