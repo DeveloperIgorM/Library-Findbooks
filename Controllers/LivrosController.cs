@@ -208,6 +208,7 @@ namespace NewRepository.Controllers
             dataTable.Columns.Add("Ano Publicacao", typeof(string));
             dataTable.Columns.Add("Autor", typeof(string));
             dataTable.Columns.Add("Nome Editora", typeof(string));
+            dataTable.Columns.Add("Sinopse", typeof(string));
             dataTable.Columns.Add("Quantidade", typeof(int));
 
             return dataTable;
@@ -251,6 +252,7 @@ namespace NewRepository.Controllers
             dataTable.Columns.Add("Ano Publicacao", typeof(string));
             dataTable.Columns.Add("Autor", typeof(string));
             dataTable.Columns.Add("Nome Editora", typeof(string));
+            dataTable.Columns.Add("Sinopse", typeof(string));
             dataTable.Columns.Add("Quantidade", typeof(int));
 
             // Filtra os livros cadastrados pelo usuário logado

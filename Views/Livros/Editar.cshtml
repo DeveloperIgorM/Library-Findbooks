@@ -127,7 +127,7 @@
 <div class="container">
     <!--if (ViewBag.UsuarioLogado ?? false) -->
       
-    {
+    
         <form method="post" asp-action="Editar" asp-controller="Livros" enctype="multipart/form-data">
             <h2>Edição de Livros - @Model.Titulo</h2>
 
@@ -198,7 +198,7 @@
                 <a class="btn btn-info" asp-controller="Livros" asp-action="Index"><i class="bi bi-arrow-left-circle"></i> Voltar</a>
             </div>
         </form>
-    }
+    
   <!--  else
     {
         <div class="alert alert-danger text-center" role="alert">

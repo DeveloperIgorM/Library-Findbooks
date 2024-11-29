@@ -36,8 +36,9 @@
     }
 
     .import {
-        text-align:center;
+        text-align: center;
     }
+
     .btn {
         padding: 10px 20px;
         border-radius: 30px;
@@ -162,11 +163,9 @@
     <div class="text-center mb-5">
         <h1>Biblioteca Virtual</h1>
         @if (ViewBag.UsuarioLogado)
-        {          
+        {
             <a class="btn btn-primary" asp-controller="Livros" asp-action="Cadastrar">Cadastrar Novo Livro</a>
-           
         }
-        
         else
         {
             <p class="text-center text-danger">Por favor, faça login para cadastrar livros.</p>
@@ -177,13 +176,11 @@
         <label for="fileInput">Importar Planilha Excel</label>
         <input type="file" name="form" class="form-control-file mb-2" id="fileInput">
         <button type="submit" class="btn btn-primary">Importar</button>
-        
     </form>
     <div class="text-center mb-5">
-       
         <a class="btn btn-success" asp-controller="Livros" asp-action="Exportar">Exportar Modelo</a>
         <a class="btn btn-success" asp-controller="Livros" asp-action="ExportLivros">Exportar Livros</a>
-        </div>
+    </div>
 
     <!-- Cards de Livros -->
     <div class="row">
@@ -193,9 +190,16 @@
             {
                 <div class="card">
                     <!-- Verifica se a imagem está disponível -->
-                    <img src="~/imagem/@(string.IsNullOrEmpty(livro.Capa) ? "placeholder.jpg" : livro.Capa)"
-                         class="card-img-top"
-                         alt="@livro.Titulo">
+                    @if (!string.IsNullOrEmpty(livro.Capa))
+                    {
+                        <img src="~/imagem/@livro.Capa" class="card-img-top" alt="@livro.Titulo">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="height: 220px; display: flex; align-items: center; justify-content: center; background-color: #f5f7fa; color: #333;">
+                            Capa do livro não adicionada!
+                        </div>
+                    }
                     <div class="card-body">
                         <h5 class="card-title">@livro.Titulo</h5>
                         <p class="card-text"><strong>Autor:</strong> @livro.Autor</p>
@@ -206,15 +210,8 @@
                     @if (ViewBag.UsuarioLogado)
                     {
                         <div class="card-body">
-                            <a class="btn btn-warning"
-                               asp-controller="Livros"
-                               asp-action="Editar"
-                               asp-route-id="@livro.Id">Editar</a>
-                            <a class="btn btn-danger"
-                               asp-controller="Livros"
-                               asp-action="Remover"
-                               asp-route-id="@livro.Id"
-                               onclick="return confirm('Este livro será excluído permanentemente. Você realmente deseja continuar?');">Remover</a>
+                            <a class="btn btn-warning" asp-controller="Livros" asp-action="Editar" asp-route-id="@livro.Id">Editar</a>
+                            <a class="btn btn-danger" asp-controller="Livros" asp-action="Remover" asp-route-id="@livro.Id" onclick="return confirm('Este livro será excluído permanentemente. Você realmente deseja continuar?');">Remover</a>
                         </div>
                     }
                 </div>

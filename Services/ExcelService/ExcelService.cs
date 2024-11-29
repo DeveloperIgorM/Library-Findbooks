@@ -57,10 +57,11 @@ namespace ImportarPlanilhaExcelProjeto.Services
                             produto.AnoPublicacao = worksheet.Cells[linha, 4].Value?.ToString(); // Ano de publicação
                             produto.Autor = worksheet.Cells[linha, 5].Value.ToString(); // Autor
                             produto.NomeEditatora = worksheet.Cells[linha, 6].Value?.ToString(); // Editora
+                            produto.Sinopse = worksheet.Cells[linha, 7].Value.ToString();
                             produto.UsuarioId = usuarioLogadoId;
 
                             // Define a quantidade no modelo InstituicaoLivroModel
-                            instituicaoLivro.Quantidade = int.TryParse(worksheet.Cells[linha, 7].Value?.ToString(), out int quantidade) ? quantidade : 0;
+                            instituicaoLivro.Quantidade = int.TryParse(worksheet.Cells[linha, 8].Value?.ToString(), out int quantidade) ? quantidade : 0;
                             instituicaoLivro.Livro = produto;  // Estabelece a relação entre InstituicaoLivro e LivroModel
                             instituicaoLivro.UsuarioId = usuarioLogadoId; // Associa a instituição ao usuário logado
 
