@@ -76,6 +76,7 @@ namespace NewRepository.Controllers
 
         public IActionResult Equipe()
         {
+            ViewBag.ExibirRodape = false;
             return View();
         }
 

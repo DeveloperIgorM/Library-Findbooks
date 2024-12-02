@@ -1,44 +1,149 @@
 ﻿@using NewRepository.Dto
 @model List<UsuarioModel>
 
-@if (ViewBag.AdministradorLogado)
+<div class="container">
+    @if (ViewBag.AdministradorLogado)
     {
-        
-    <h2>Instituições Pendentes de Aprovação</h2>
+        <h2 class="page-title">Instituições Pendentes de Aprovação</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>CNPJ</th>
-                <th>Endereço</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var instituicao in Model)
-            {
-                <tr>
-                    <td>@instituicao.NomeFantasia</td>
-                    <td>@instituicao.Email</td>
-                    <td>@instituicao.Telefone</td>
-                    <td>@instituicao.Cnpj</td>
-                    <td>@instituicao.Endereco</td>
-                    <td>
-                        <form method="post" asp-action="AtualizarStatusInstituicao">
-                            <input type="hidden" name="id" value="@instituicao.Id" />
-                            <button type="submit" name="status" value="1" class="btn btn-success">Aceitar</button>
-                            <button type="submit" name="status" value="0" class="btn btn-danger">Recusar</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p class="text-center text-danger">Por favor, faça login para acessar   .</p>
-}
+        <div class="card">
+            <div class="card-body">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>CNPJ</th>
+                            <th>Endereço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var instituicao in Model)
+                        {
+                            <tr>
+                                <td>@instituicao.NomeFantasia</td>
+                                <td>@instituicao.Email</td>
+                                <td>@instituicao.Telefone</td>
+                                <td>@instituicao.Cnpj</td>
+                                <td>@instituicao.Endereco</td>
+                                <td>
+                                    <form method="post" asp-action="AtualizarStatusInstituicao">
+                                        <input type="hidden" name="id" value="@instituicao.Id" />
+                                        <button type="submit" name="status" value="1" class="btn btn-success">Aceitar</button>
+                                        <button type="submit" name="status" value="0" class="btn btn-danger">Recusar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <p class="text-danger">Por favor, faça login para acessar.</p>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #7B68EE);
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: transparent;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff, #f2f2f2);
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 16px;
+        text-align: left;
+    }
+
+        .styled-table thead tr {
+            background-color: #7B68EE;
+            color: #ffffff;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .styled-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+    .btn {
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .text-danger {
+        font-size: 18px;
+        color: #d9534f;
+    }
+</style>

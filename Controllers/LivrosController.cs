@@ -34,6 +34,7 @@ namespace NewRepository.Controllers
       
         public async Task<IActionResult> Index()
         {
+            ViewBag.ExibirRodape = false;
             var usuarioLogado = _sessaoService.BuscarSessao();
             var administradorLogado = _sessaoService.BuscarSessaoAdm();
 

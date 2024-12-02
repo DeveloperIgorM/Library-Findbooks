@@ -27,50 +27,55 @@
         z-index: -1;
     }
 
-    /* Container com fundo branco translúcido */
+    /* Container centralizado */
     .content-container {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 30px;
         border-radius: 10px;
-        max-width: 800px;
-        margin: 0 auto;
+        max-width: 1000px;
+        margin: 50px auto; /* Margem para centralizar */
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         position: relative;
         z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     /* Estilos da seção da equipe */
     .team-title {
         font-size: 2em;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
         color: #333;
         text-align: center;
     }
 
     .team-members {
-        display: flex;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Alinhamento flexível */
         gap: 30px;
-        flex-wrap: wrap;
+        justify-items: center; /* Centraliza os itens */
+        width: 100%; /* Ocupar toda a largura */
     }
 
     .team-member {
         text-align: center;
-        max-width: 150px;
     }
 
         .team-member img {
             width: 150px;
             height: 150px;
             object-fit: cover;
-            border-radius: 5px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
 
     .team-member-name {
         font-size: 1em;
         color: #333;
         margin-top: 10px;
+        font-weight: 500;
     }
 </style>
 
@@ -79,19 +84,37 @@
 
 <!-- Container principal com o conteúdo da equipe -->
 <div class="content-container">
-    <div class="team-title">Nossa Equipe:</div>
+    <div class="team-title">Nossa Equipe</div>
 
     <div class="team-members">
         <!-- Primeiro membro -->
         <div class="team-member">
-            <img src="~/imagem/Equipe/Luccas.jpeg" alt="Foto de Luccas Henrique Cardum Bismara" />
-            <div class="team-member-name">Luccas Henrique Cardum Bismara</div>
+            <img src="~/imagem/Equipe/Guilherme.jpg" alt="Foto de Guilherme de Oliveira Lobo" />
+            <div class="team-member-name">Guilherme de Oliveira Lobo</div>
         </div>
 
         <!-- Segundo membro -->
         <div class="team-member">
             <img src="~/imagem/Equipe/igor.jpg" alt="Foto de Igor Matheus de Oliveira Batista" />
             <div class="team-member-name">Igor Matheus de Oliveira Batista</div>
+        </div>
+
+        <!-- Terceiro membro -->
+        <div class="team-member">
+            <img src="~/imagem/Equipe/Luccas.jpeg" alt="Foto de Luccas Henrique Cardum Bismara" />
+            <div class="team-member-name">Luccas Henrique Cardum Bismara</div>
+        </div>
+
+        <!-- Quarto membro -->
+        <div class="team-member">
+            <img src="~/imagem/Equipe/Matheus.jpeg" alt="Foto de Matheus Antunes dos Santos" />
+            <div class="team-member-name">Matheus Antunes dos Santos</div>
+        </div>
+
+        <!-- Quinto membro -->
+        <div class="team-member">
+            <img src="~/imagem/Equipe/Vinicius.jpg" alt="Foto de Vinicius Wenzel Bulik Moreira" />
+            <div class="team-member-name">Vinicius Wenzel Bulik Moreira</div>
         </div>
     </div>
 </div>

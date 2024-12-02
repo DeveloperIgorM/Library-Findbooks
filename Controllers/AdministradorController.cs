@@ -124,6 +124,7 @@ public class AdministradorController : Controller
     [HttpGet]
     public async Task<IActionResult>Pendente()
     {
+        ViewBag.ExibirRodape = false;
         var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
         ViewBag.AdministradorLogado = AdministradorLogado != null ? true : false;
 
