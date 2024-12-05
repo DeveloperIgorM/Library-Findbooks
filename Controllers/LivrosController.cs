@@ -82,6 +82,7 @@ namespace NewRepository.Controllers
 
         public async Task<IActionResult> Detalhes(int id)
         {
+            ViewBag.ExibirRodape = false;
             // Verifica se há um usuário logado na sessão
             var usuarioLogado = _sessaoService.BuscarSessao();
             ViewBag.UsuarioLogado = usuarioLogado != null; // Define true se há sessão, caso contrário false

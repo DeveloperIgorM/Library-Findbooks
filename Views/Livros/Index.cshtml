@@ -191,12 +191,17 @@
             <p class="text-center text-danger">Por favor, faça login para cadastrar livros.</p>
         }
     </div>
-    <!-- Formulário para importação -->
-    <form asp-action="ImportExcel" asp-controller="Livros" method="post" enctype="multipart/form-data" class="import">
-        <label for="fileInput">Importar Planilha Excel</label>
-        <input type="file" name="form" class="form-control-file mb-2" id="fileInput">
-        <button type="submit" class="btn btn-primary">Importar</button>
-    </form>
+
+    <!-- Botão Cadastro em Lote -->
+    <div class="text-center mb-5">
+        <form asp-action="ImportExcel" asp-controller="Livros" method="post" enctype="multipart/form-data" id="cadastroLoteForm">
+            <input type="file" name="form" id="fileInputCadastroLote" class="d-none" onchange="document.getElementById('cadastroLoteForm').submit();" />
+            <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInputCadastroLote').click();">
+                Cadastro em Lote
+            </button>
+        </form>
+    </div>
+
     <div class="text-center mb-5">
         <a class="btn btn-success" asp-controller="Livros" asp-action="Exportar">Exportar Modelo</a>
         <a class="btn btn-success" asp-controller="Livros" asp-action="ExportLivros">Exportar Livros</a>
@@ -246,6 +251,8 @@
 <a class="btn-voltar" asp-controller="Home" asp-action="Index">
     <i class="bi bi-arrow-left-circle"></i> Voltar
 </a>
+
+
 
 
 <button id="backToTop" title="Voltar ao topo">↑</button>
