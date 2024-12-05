@@ -204,8 +204,14 @@ namespace NewRepository.Services.Livro
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(pesquisar))
+                    return await _contexto.Livros.ToListAsync();
+
                 return await _contexto.Livros
-                    .Where(livroBanco => livroBanco.Titulo.Contains(pesquisar))
+                    .Where(livroBanco =>
+                        livroBanco.Titulo.Contains(pesquisar) ||
+                        livroBanco.Isbn.Contains(pesquisar) ||
+                        livroBanco.Autor.Contains(pesquisar)) // Supondo que a entidade LivroModel tenha um campo Autor
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -214,7 +220,7 @@ namespace NewRepository.Services.Livro
             }
         }
 
-       public async Task<List<LivroModel>> GetLivrosPorUsuario(int usuarioId)
+        public async Task<List<LivroModel>> GetLivrosPorUsuario(int usuarioId)
 {
     try
     {

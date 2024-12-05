@@ -44,15 +44,16 @@
 
         /* Estilos para o footer fixo, centralizado e com bordas arredondadas */
         footer {
+            position: relative;
             background: linear-gradient(135deg, #333, #5a5aff);
             padding: 5px 0;
+            height: 100%;
             color: #f1f1f1;
             text-align: center;
             font-size: 0.8rem;
             box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.3);
             bottom: 0;
             width: 100%;
-            height: 45px;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             display: flex;
@@ -73,15 +74,14 @@
             transform: scale(1.1);
         }
 
-        /* Espaçamento adicional no conteúdo para evitar sobreposição do header e footer */
         .content-padding {
             padding-top: 70px;
-            padding-bottom: 55px;
+            padding-bottom: 100px;
         }
 
         /* Animação de fade-in para o conteúdo principal */
         .fade-in {
-            animation: fadeInAnimation 1s ease-in-out;
+            animation: fadeInAnimation 1s ease-in-o     ut;
         }
         keyframes fadeInAnimation {
             from { opacity: 0; }

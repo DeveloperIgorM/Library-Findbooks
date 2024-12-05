@@ -235,8 +235,6 @@ namespace NewRepository.Controllers
         {
             // Recupera o usuário logado
             var usuarioLogado = _sessaoService.BuscarSessao();
-            
-
 
             if (usuarioLogado == null)
             {
@@ -246,7 +244,7 @@ namespace NewRepository.Controllers
             DataTable dataTable = new DataTable();
             dataTable.TableName = "ExportLivros";
 
-            // Adiciona as colunas sem dados
+            // Adiciona as colunas ao DataTable
             dataTable.Columns.Add("Isbn", typeof(string));
             dataTable.Columns.Add("Titulo", typeof(string));
             dataTable.Columns.Add("Genero", typeof(string));
@@ -257,21 +255,41 @@ namespace NewRepository.Controllers
             dataTable.Columns.Add("Quantidade", typeof(int));
 
             // Filtra os livros cadastrados pelo usuário logado
-            var dados = _context.Livros
+            var livros = _context.Livros
                 .Where(livro => livro.UsuarioId == usuarioLogado.Id) // Filtra pelo ID do usuário logado
                 .ToList();
 
-            // Preenche o DataTable apenas se houver livros
-            if (dados.Count > 0)
+            // Busca as informações de InstituicaoLivroModel associadas
+            var instituicaoLivros = _context.InstituicaoLivros
+                .Where(il => livros.Select(l => l.Id).Contains(il.LivroId)) // Obtém apenas os registros associados aos livros
+                .ToList();
+
+            livros.ForEach(livro =>
             {
-                dados.ForEach(livros =>
-                {
-                    dataTable.Rows.Add(livros.Isbn, livros.Titulo, livros.Genero, livros.AnoPublicacao, livros.Autor, livros.NomeEditatora);
-                });
-            }
+                // Obtém a quantidade da InstituicaoLivroModel correspondente
+                var quantidade = instituicaoLivros
+                    .Where(il => il.LivroId == livro.Id)
+                    .Sum(il => il.Quantidade); // Soma as quantidades se houver mais de uma instituição
+
+                // Trata o campo AnoPublicacao para garantir que ele contenha apenas um ano válido
+                string anoPublicacao = livro.AnoPublicacao;
+
+                dataTable.Rows.Add(
+                    livro.Isbn,
+                    livro.Titulo,
+                    livro.Genero,
+                    anoPublicacao, // Usa o ano diretamente
+                    livro.Autor,
+                    livro.NomeEditatora,
+                    livro.Sinopse,
+                    quantidade // Adiciona a quantidade
+                );
+            });
+
 
             return dataTable;
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Cadastrar(LivroCriacaoDto livroCriacaoDto, IFormFile foto)

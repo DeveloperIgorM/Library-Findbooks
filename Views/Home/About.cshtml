@@ -84,6 +84,25 @@
         transition: background-color 0.3s ease;
     }
 
+    .btn-voltar {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-voltar:hover {
+            background-color: #FFD700;
+            color: black;
+        }
+
         .btn-warning:hover {
             background-color: #d98c1f;
             cursor: pointer;
@@ -180,6 +199,7 @@
 <div class="login-wrapper">
     <div class="login-container">
 
+
         <!-- Seção FindBooks (centralizada) -->
         <div class="content-section findbooks-section">
             <div class="section-title">Bem-vindo ao FindBooks!</div>
@@ -189,7 +209,11 @@
             </div>
         </div>
     </div>
+
+    
 </div>
 
 
-
+<a class="btn-voltar" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-arrow-left-circle"></i> Voltar
+    </a>
