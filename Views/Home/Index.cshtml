@@ -1,13 +1,25 @@
 ﻿@model IEnumerable<LivroModel>
 
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["MensagemErro"]
+    </div>
+}
+
 <style>
     /* Estilo geral */
     body {
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #f5f7fa, #7B68EE);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
         margin: 0;
         padding: 0;
-        overflow-x: hidden;
+        min-height: 100%; 
+        display: flex;
+        flex-direction: column;
     }
 
     .container {

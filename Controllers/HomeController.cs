@@ -34,6 +34,7 @@ namespace NewRepository.Controllers
 
         public async Task<IActionResult> Index(string? pesquisar, int page = 1, int pageSize = 10)
         {
+            
             var usuarioLogado = _sessaoInterface.BuscarSessao();
             var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
 
@@ -58,7 +59,8 @@ namespace NewRepository.Controllers
             // Verifica se encontrou livros
             if (livros == null || !livros.Any())
             {
-                return View(Index);
+                TempData["MensagemErro"] = "Nenhum Livro foi encontrado com esse nome ou Isbn.";
+                return View();
                
             }
 
@@ -83,6 +85,7 @@ namespace NewRepository.Controllers
 
         public  IActionResult About()
         {
+            ViewBag.ExibirRodape = false;
             return View();
         }
 
