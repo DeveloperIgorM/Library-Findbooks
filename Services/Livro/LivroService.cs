@@ -200,24 +200,23 @@ namespace NewRepository.Services.Livro
         }
 
         // Método para buscar livros com filtro
-        public async Task<List<LivroModel>> GetLivrosFiltro(string? pesquisar)
+        public async Task<List<LivroModel>> GetLivrosFiltro(string? pesquisar, int page = 1, int pageSize = 10)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(pesquisar))
-                    return await _contexto.Livros.ToListAsync();
+            IQueryable<LivroModel> query = _contexto.Livros;
 
-                return await _contexto.Livros
-                    .Where(livroBanco =>
-                        livroBanco.Titulo.Contains(pesquisar) ||
-                        livroBanco.Isbn.Contains(pesquisar) ||
-                        livroBanco.Autor.Contains(pesquisar)) // Supondo que a entidade LivroModel tenha um campo Autor
-                    .ToListAsync();
-            }
-            catch (Exception ex)
+            if (!string.IsNullOrWhiteSpace(pesquisar))
             {
-                throw new Exception(ex.Message);
+                pesquisar = pesquisar.Trim().ToLower();
+                query = query.Where(livroBanco =>
+                    livroBanco.Titulo.ToLower().Contains(pesquisar) ||
+                    livroBanco.Isbn.ToLower().Contains(pesquisar) ||
+                    livroBanco.Autor.ToLower().Contains(pesquisar));
             }
+
+            return await query
+                .Skip((page - 1) * pageSize) // Pula os registros das páginas anteriores
+                .Take(pageSize) // Traz apenas os registros da página atual
+                .ToListAsync();
         }
 
         public async Task<List<LivroModel>> GetLivrosPorUsuario(int usuarioId)

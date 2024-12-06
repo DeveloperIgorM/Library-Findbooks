@@ -32,7 +32,7 @@ namespace NewRepository.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Index(string? pesquisar)
+        public async Task<IActionResult> Index(string? pesquisar, int page = 1, int pageSize = 10)
         {
             var usuarioLogado = _sessaoInterface.BuscarSessao();
             var AdministradorLogado = _sessaoInterface.BuscarSessaoAdm();
@@ -49,16 +49,29 @@ namespace NewRepository.Controllers
             {
                 ViewBag.Nome = AdministradorLogado.Nome;
             }
-            // Busca todos os livros ou com filtro
+
+            // Busca todos os livros ou com filtro, com paginação
             var livros = pesquisar == null
-                ? await _livroInterface.GetLivros()
-                : await _livroInterface.GetLivrosFiltro(pesquisar);
+                ? await _livroInterface.GetLivrosFiltro(null, page, pageSize)
+                : await _livroInterface.GetLivrosFiltro(pesquisar, page, pageSize);
+
+            // Verifica se encontrou livros
+            if (livros == null || !livros.Any())
+            {
+                // Retorna a View com uma mensagem específica
+                ViewBag.Mensagem = "Livro não encontrado ou ISBN não encontrado.";
+                return View("Mensagem");
+            }
 
             // Busca informações de instituições e quantidades para cada livro
             foreach (var livro in livros)
             {
                 livro.InstituicaoLivros = await _livroInterface.GetInstituicaoLivroPorLivro(livro.Isbn);
             }
+
+            // Envia a lista de livros e as informações de paginação para a View
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
 
             return View(livros);
         }

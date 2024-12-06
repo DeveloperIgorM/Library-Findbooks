@@ -189,61 +189,75 @@
     <!-- Barra de pesquisa -->
     <div class="text-center mb-5">
         <form method="get" asp-action="Index" asp-controller="Home" class="search-bar">
-            <input name="pesquisar" class="form-control search-input" placeholder="Pesquise seu livro..." />
+            <input name="pesquisar" class="form-control search-input" placeholder="Pesquise por nome do livro e isbn..." />
             <button type="submit" class="btn btn-primary search-button">Pesquisar</button>
         </form>
     </div>
 
-    <!-- Cards dos livros -->
-    <div class="row">
-        @if (Model != null && Model.Count() > 0)
+<!-- Mensagem centralizada -->
+<div class="row">
+    @if (!string.IsNullOrEmpty(ViewBag.Mensagem))
+    {
+        <div style="text-align: center; margin-top: 50px;">
+            <h2>@ViewBag.Mensagem</h2>
+        </div>
+    }
+</div>
+
+<!-- Cards dos livros -->
+<div class="row">
+        @if (Model != null && Model.Any())
         {
             @foreach (var livro in Model)
             {
-                <div class="book-card">
-                    <div class="book-card-inner">
+                    <div class="book-card">
+                        <div class="book-card-inner">
                         @if (!string.IsNullOrEmpty(livro.Capa))
                         {
-                            <!-- Livro com capa -->
-                            <div class="book-card-front">
-                                <div class="card-image">
-                                    <img src="~/imagem/@livro.Capa" alt="@livro.Titulo">
-                                </div>
-                            </div>
+                                    <!-- Livro com capa -->
+                                    <div class="book-card-front">
+                                        <div class="card-image">
+                                            <img src="~/imagem/@livro.Capa" alt="@livro.Titulo">
+                                        </div>
+                                    </div>
                         }
                         else
                         {
-                            <!-- Livro sem capa -->
-                            <div class="book-card-front no-cover">
-                                <h3 class="no-cover-title">@livro.Titulo</h3>
-                            </div>
+                                    <!-- Livro sem capa -->
+                                    <div class="book-card-front no-cover">
+                                        <h3 class="no-cover-title">@livro.Titulo</h3>
+                                    </div>
                         }
 
-                        <div class="book-card-back">
-                            <h5 class="card-title">@livro.Titulo</h5>
-                            <p>Autor: @livro.Autor</p>
-                            <p>ISBN: @livro.Isbn</p>
-                            <h6>Instituições com este livro:</h6>
-                            <ul>
+                            <div class="book-card-back">
+                                <h5 class="card-title">@livro.Titulo</h5>
+                                <p>Autor: @livro.Autor</p>
+                                <p>ISBN: @livro.Isbn</p>
+                                <h6>Instituições com este livro:</h6>
+                                <ul>
                                 @foreach (var instLivro in livro.InstituicaoLivros)
                                 {
-                                    <li>@instLivro.Usuario.NomeFantasia - Quantidade: @instLivro.Quantidade</li>
+                                            <li>@instLivro.Usuario.NomeFantasia - Quantidade: @instLivro.Quantidade</li>
                                 }
-                            </ul>
-                            <a href="@Url.Action("Detalhes", "Livros", new { id = livro.Id })" class="book-button">Ver Detalhes</a>
+                                </ul>
+                                <a href="@Url.Action("Detalhes", "Livros", new { id = livro.Id })" class="book-button">Ver Detalhes</a>
+                            </div>
                         </div>
                     </div>
-                </div>
             }
         }
-    </div>
-
+        else
+        {
+            <div style="text-align: center; margin-top: 50px;">
+                <h2>@ViewBag.Mensagem</h2>
+            </div>
+        }
 </div>
 
 <button id="backToTop" title="Voltar ao topo">↑</button>
 
 <!-- Ícones fixos no final da página -->
-<div style="position: fixed; bottom: 60px; left: 20px; display: flex; flex-direction: column; align-items: center;">
+<div style="position: fixed; bottom: 60px; left: 10px; display: flex; flex-direction: column; align-items: center;">
     <a href="https://www.instagram.com" target="_blank" style="margin: 5px;">
         <i class="bi bi-instagram" style="font-size: 24px;"></i>
     </a>
