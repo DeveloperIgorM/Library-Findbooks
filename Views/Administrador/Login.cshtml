@@ -15,7 +15,6 @@
     body, html {
         margin: 0;
         padding: 0;
-        height: 100%;
         font-family: 'Arial', sans-serif;
         background: linear-gradient(135deg, #f5f7fa, #7B68EE);
         display: flex;
@@ -123,6 +122,25 @@
             background: linear-gradient(to right, #6a3784, #c1223b);
         }
 
+    .btn-voltar {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        border-radius: 25px;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .btn-voltar:hover {
+            background-color: #FFD700;
+            color: black;
+        }
+
     /* Links */
     .login-links {
         margin-top: 15px;
@@ -183,6 +201,10 @@
         </div>
     </div>
 </div>
+<a class="btn-voltar" asp-controller="Home" asp-action="Index">
+    <i class="bi bi-arrow-left-circle"></i> Voltar
+</a>
+
 
 
 

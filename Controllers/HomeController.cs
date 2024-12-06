@@ -58,9 +58,8 @@ namespace NewRepository.Controllers
             // Verifica se encontrou livros
             if (livros == null || !livros.Any())
             {
-                // Retorna a View com uma mensagem específica
-                ViewBag.Mensagem = "Livro não encontrado ou ISBN não encontrado.";
-                return View("Mensagem");
+                return View(Index);
+               
             }
 
             // Busca informações de instituições e quantidades para cada livro

@@ -194,11 +194,11 @@
 
     <!-- Botão Cadastro em Lote -->
     <div class="text-center mb-5">
-        <form asp-action="ImportExcel" asp-controller="Livros" method="post" enctype="multipart/form-data" id="cadastroLoteForm">
-            <input type="file" name="form" id="fileInputCadastroLote" class="d-none" onchange="document.getElementById('cadastroLoteForm').submit();" />
-            <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInputCadastroLote').click();">
-                Cadastro em Lote
-            </button>
+        <form asp-action="ImportExcel" asp-controller="Livros" method="post" enctype="multipart/form-data" class="import">
+            <label for="fileInput">Importar Planilha Excel</label>
+            <input type="file" name="form" class="form-control-file mb-2" id="fileInput">
+            <button type="submit" class="btn btn-primary">Importar</button>
+
         </form>
     </div>
 
