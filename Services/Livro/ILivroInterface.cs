@@ -10,7 +10,7 @@ namespace NewRepository.Services.Livro
         Task<LivroModel> GetLivroPorId(int id);
         Task<LivroModel> EditarLivro(LivroModel livro, IFormFile? foto);
         Task<LivroModel> RemoverLivro(int id);
-        Task<List<LivroModel>> GetLivrosFiltro(string? pesquisar, int page = 1, int pageSize = 10);
+        Task<List<LivroModel>> GetLivrosFiltro(string? pesquisar);
         Task<List<LivroModel>> GetLivrosPorUsuario(int usuarioId);
         Task<LivroModel?> GetLivroPorIsbnEUsuario(string isbn, int usuarioId);
         Task CadastrarLivrosEmLote(List<LivroCriacaoDto> livrosCriacaoDto, int usuarioId); // Ajustado
