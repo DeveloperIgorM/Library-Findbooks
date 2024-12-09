@@ -1,218 +1,135 @@
-﻿@using NewRepository
-
-@{
-    Layout = "_Layout";
-}
-
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger text-dark" role="alert">
-        @TempData["MensagemErro"]
-    </div>
-}
-
-<style>
+﻿<style>
     body, html {
         margin: 0;
         padding: 0;
         height: 100%;
-        overflow: hidden; /* Remove a rolagem da página */
+        overflow: hidden;
         font-family: 'Arial', sans-serif;
     }
 
-    /* Background desfocado e cobrindo toda a tela */
+    /* Background desfocado */
     .login-background {
         background: linear-gradient(135deg, #f5f7fa, #7B68EE);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        filter: blur(5px); /* Aplicar desfoque na imagem de fundo */
+        filter: blur(5px);
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1; /* Garantir que o background fique atrás do conteúdo */
+        z-index: -1;
     }
 
-    .login-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 30px;
-        border-radius: 10px;
-        max-width: 400px;
-        width: 100%;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        position: relative;
-        z-index: 1; /* Garantir que o formulário fique sobre a imagem */
-    }
-
-    /* Centralizar o conteúdo vertical e horizontalmente */
+    /* Centralização principal */
     .login-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        position: relative;
+        height: 80vh;
     }
 
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .mb-3 label {
-        font-weight: bold;
-        font-size: 1.1em;
-    }
-
-    .form-control {
-        padding: 10px;
-        font-size: 1em;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 15px;
-    }
-
-    .btn-voltar {
-        display: inline-block;
-        margin-top: 30px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        text-align: center;
-        border-radius: 25px;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-        .btn-voltar:hover {
-            background-color: #FFD700;
-            color: black;
-        }
-
-    .btn-warning {
-        background-color: #f0ad4e;
-        color: black;
-        border: none;
-        padding: 10px 0;
-        border-radius: 5px;
-        font-size: 1.1em;
-        transition: background-color 0.3s ease;
-    }
-
-        .btn-warning:hover {
-            background-color: #d98c1f;
-            cursor: pointer;
-        }
-
-    .alert-danger {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-        background-color: rgba(255, 0, 0, 0.8);
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-    }
-
-    /* Estilo para o cabeçalho que fica fixo na parte superior */
-    header {
-        position: relative;
-        top: 0;
-        left: 0;
+    /* Formulário principal */
+    .login-container {
+        background: linear-gradient(50deg, #f5f7fa, #808080);
+        padding: 40px;
+        border-radius: 10px;
+        max-width: 400px;
         width: 100%;
-        background-color: #fff;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 2px solid black;
     }
 
-    .login-wrapper {
-        padding-bottom: 150px; /* Espaço para o cabeçalho */
+    .login-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
     }
 
-    /* Remover espaço branco abaixo do cabeçalho */
-    main {
-        padding: 0;
-        margin: 0;
-    }
-</style>
-
-<!-- Container principal com o fundo desfocado -->
-<div class="login-background"></div>
-
-<style>
-    /* Estrutura principal */
-    .content-section {
-        margin-bottom: 30px;
+    /* Títulos das seções */
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
         text-align: center;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .content-wrapper {
-        display: flex;
-        align-items: flex-start;
-        gap: 20px;
+    /* Texto da seção */
+    .content-text {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #000;
         margin-bottom: 20px;
     }
 
-    .content-text {
-        flex: 1;
-        font-size: 1.1em;
-        color: #333;
-    }
-
-    .content-image {
-        width: 200px;
-        height: auto;
-        border-radius: 5px;
-    }
-
-    .section-title {
-        font-size: 1.5em;
+    /* Botão Voltar */
+    .btn-voltar {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 25px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1.1rem;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
+        text-align: center;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* Centralizando a descrição do FindBooks */
-    .findbooks-section {
-        max-width: 600px;
-        margin: 0 auto;
+    .btn-voltar:hover {
+        background-color: #FFD700;
+        color: black;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
     }
 
-    /* Configurações para a equipe */
-    .team-section {
-        text-align: left;
-    }
-
-    /* Estilo do nome da equipe (menor que o título) */
-    .team-name {
-        font-size: 1.2em; /* Ajuste o tamanho conforme desejar */
-        font-weight: normal;
-        color: #555;
-    }
-
-    /* Estilos dos ícones de redes sociais */
+    /* Ícones sociais */
     .social-icons a {
-        margin: 0 5px;
-        color: inherit; /* Para garantir que a cor do texto seja aplicada */
-        text-decoration: none; /* Remove o sublinhado */
-        font-size: 24px; /* Ajusta o tamanho do ícone */
+        margin: 0 10px;
+        color: #000;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        color: #FFD700;
+        transform: scale(1.2);
+    }
+
+    /* Responsividade */
+    media (max-width: 600px) {
+        .login-container {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .content-text {
+            font-size: 1rem;
+        }
+
+        .btn-voltar {
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
     }
 </style>
 
+<div class="login-background"></div>
+
 <div class="login-wrapper">
     <div class="login-container">
-        <!-- Seção FindBooks (centralizada) -->
-        <div class="content-section findbooks-section">
+        <!-- Seção de Contato -->
+        <div class="content-section">
             <div class="section-title">Contato</div>
             <div class="content-text">
-                <p>
-                    Email: findbooks2024@hotmail.com <br />
-                    Telefone: (15) 0000-0000
-                </p>
+                Email: findbooks2024@hotmail.com <br />
+                Telefone: (15) 0000-0000
             </div>
         </div>
 
@@ -220,13 +137,13 @@
         <div class="content-section">
             <div class="section-title">Siga-nos</div>
             <div class="content-text social-icons">
-                <a href="https://www.instagram.com" target="_blank">
+                <a href="https://www.instagram.com" target="_blank" title="Instagram">
                     <i class="bi bi-instagram"></i>
                 </a>
-                <a href="https://www.twitter.com" target="_blank">
+                <a href="https://www.twitter.com" target="_blank" title="Twitter">
                     <i class="bi bi-twitter"></i>
                 </a>
-                <a href="https://www.facebook.com" target="_blank">
+                <a href="https://www.facebook.com" target="_blank" title="Facebook">
                     <i class="bi bi-facebook"></i>
                 </a>
             </div>

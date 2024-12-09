@@ -12,12 +12,9 @@
 }
 
 <style>
-    /* Estilo de fundo desfocado */
+    /* Fundo desfocado */
     .background-blur {
         background: linear-gradient(135deg, #f5f7fa, #7B68EE);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         filter: blur(5px);
         position: absolute;
         top: 0;
@@ -29,74 +26,114 @@
 
     /* Container centralizado */
     .content-container {
-        background-color: rgba(255, 255, 255, 0.9);
+        background: linear-gradient(50deg, #f5f7fa, #808080);
         padding: 30px;
-        border-radius: 10px;
-        max-width: 1000px;
-        margin: 50px auto; /* Margem para centralizar */
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        max-width: 1200px;
+        margin: 60px auto;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         position: relative;
         z-index: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
+        border: 2px solid black;
     }
 
     .btn-voltar {
-        display: inline-block;
         margin-top: 30px;
-        padding: 10px 20px;
+        padding: 12px 25px;
         background-color: #007bff;
         color: white;
-        text-align: center;
-        border-radius: 25px;
+        border-radius: 50px;
         text-decoration: none;
-        font-size: 1rem;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        font-size: 1.1rem;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        text-align: center;
     }
 
-        .btn-voltar:hover {
-            background-color: #FFD700;
-            color: black;
-        }
+    .btn-voltar:hover {
+        background-color: #FFD700;
+        color: black;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
 
     /* Estilos da seção da equipe */
     .team-title {
-        font-size: 2em;
+        font-size: 2.5rem;
         font-weight: bold;
-        margin-bottom: 30px;
-        color: #333;
+        margin-bottom: 40px;
+        color: #000;
         text-align: center;
+        text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .team-members {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Alinhamento flexível */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 30px;
-        justify-items: center; /* Centraliza os itens */
-        width: 100%; /* Ocupar toda a largura */
+        justify-items: center;
+        width: 100%;
+
     }
 
     .team-member {
         text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        
     }
 
-        .team-member img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-        }
+    .team-member:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .team-member img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .team-member:hover img {
+        transform: scale(1.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
 
     .team-member-name {
-        font-size: 1em;
-        color: #333;
-        margin-top: 10px;
-        font-weight: 500;
+        font-size: 1.1rem;
+        color: #000;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    /* Responsividade */
+    media (max-width: 600px) {
+        .team-title {
+            font-size: 1.8rem;
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .team-member-name {
+            font-size: 0.9rem;
+        }
+
+        .btn-voltar {
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
     }
 </style>
+
 
 <!-- Fundo desfocado -->
 <div class="background-blur"></div>
